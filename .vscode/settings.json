@@ -1,0 +1,8 @@
+{
+  "dart.flutterRunAdditionalArgs": [
+    "--dart-define=SUPABASE_URL=https://irkvhvdctucawzmdgkeq.supabase.co",
+    "--dart-define=SUPABASE_ANON_KEY=sb_publishable_u2_E4RGwtzw6Ny7w4G_mMw_Qtdmnes3",
+    "--dart-define=SUPABASE_ATTENDEES_TABLE=registered",
+    "--dart-define=SUPABASE_ENROLLMENT_CODE_COLUMN=CODIGO_INSCRIPCION"
+  ]
+}
