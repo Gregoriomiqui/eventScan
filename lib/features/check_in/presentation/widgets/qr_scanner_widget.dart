@@ -1,3 +1,4 @@
+import 'package:event_scan/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
@@ -6,10 +7,12 @@ class QrScannerWidget extends StatefulWidget {
     super.key,
     required this.onDetect,
     this.enabled = true,
+    this.height = 220,
   });
 
   final ValueChanged<String> onDetect;
   final bool enabled;
+  final double height;
 
   @override
   State<QrScannerWidget> createState() => _QrScannerWidgetState();
@@ -84,14 +87,28 @@ class _QrScannerWidgetState extends State<QrScannerWidget> {
   @override
   Widget build(BuildContext context) {
     if (!widget.enabled) {
-      return const SizedBox(
-        height: 220,
-        child: Center(child: Text('Escaner pausado durante la transaccion.')),
+      return SizedBox(
+        height: widget.height,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: AppColors.infoContainer,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: const Center(
+            child: Text(
+              'Escaner pausado durante la transaccion.',
+              style: TextStyle(
+                color: AppColors.info,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ),
       );
     }
 
     return SizedBox(
-      height: 220,
+      height: widget.height,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
         child: MobileScanner(
@@ -99,7 +116,7 @@ class _QrScannerWidgetState extends State<QrScannerWidget> {
           onDetect: _handleDetection,
           errorBuilder: (context, error) {
             return ColoredBox(
-              color: Colors.black,
+              color: AppColors.ink,
               child: Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -116,6 +133,10 @@ class _QrScannerWidgetState extends State<QrScannerWidget> {
                     ),
                     const SizedBox(height: 12),
                     FilledButton.tonal(
+                      style: FilledButton.styleFrom(
+                        backgroundColor: AppColors.infoContainer,
+                        foregroundColor: AppColors.info,
+                      ),
                       onPressed: _isRetrying ? null : _retryCamera,
                       child: Text(
                         _isRetrying ? 'Reintentando...' : 'Reintentar camara',

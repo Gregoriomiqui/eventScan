@@ -14,7 +14,7 @@ class GetAttendeeByUidUseCase {
     if (parsed == null) {
       return Future.value(
         const Error<Attendee>(
-          ValidationFailure('Codigo de inscripcion o RUT no valido'),
+          ValidationFailure('Código de inscripción o RUT no valido'),
         ),
       );
     }

@@ -7,6 +7,11 @@ import 'package:flutter/foundation.dart';
 import 'package:supabase/supabase.dart';
 
 abstract class AppSupabaseClient {
+  Future<List<Map<String, dynamic>>> fetchAllRows({
+    required String table,
+    required Duration timeout,
+  });
+
   Future<Map<String, dynamic>> findAttendeeByUid({
     required String table,
     required String enrollmentCodeColumn,
@@ -41,6 +46,46 @@ class SupabaseAppClient implements AppSupabaseClient {
 
   bool _looksLikeRut(String value) {
     return RegExp(r'^\d{7,8}-[0-9Kk]$').hasMatch(value.trim());
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> fetchAllRows({
+    required String table,
+    required Duration timeout,
+  }) async {
+    try {
+      const pageSize = 1000;
+      var from = 0;
+      final rows = <Map<String, dynamic>>[];
+
+      while (true) {
+        final response = await _client
+            .from(table)
+            .select('*')
+            .range(from, from + pageSize - 1)
+            .timeout(timeout);
+
+        final batch = (response as List)
+            .map((entry) => Map<String, dynamic>.from(entry as Map))
+            .toList();
+
+        rows.addAll(batch);
+
+        if (batch.length < pageSize) {
+          break;
+        }
+
+        from += pageSize;
+      }
+
+      return rows;
+    } on TimeoutException {
+      throw const NetworkException('Tiempo de espera agotado');
+    } on SocketException {
+      throw const NetworkException('Error de red');
+    } on PostgrestException catch (exception) {
+      throw _mapPostgrestException(exception);
+    }
   }
 
   ServerException _mapPostgrestException(PostgrestException exception) {

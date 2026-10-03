@@ -46,7 +46,7 @@ class CheckInBloc extends Bloc<CheckInEvent, CheckInState> {
 
       emit(
         state.copyWith(
-          feedbackMessage: 'Codigo de inscripcion o RUT no valido',
+          feedbackMessage: 'Código de inscripción o RUT no válido',
           feedbackType: FeedbackType.error,
           feedbackId: state.feedbackId + 1,
         ),
@@ -90,7 +90,7 @@ class CheckInBloc extends Bloc<CheckInEvent, CheckInState> {
           attendee: attendee,
           feedbackMessage: isPagoPendiente
               ? 'Pendiente de validación de pago'
-              : 'Asistente encontrado. Listo para check-in.',
+              : 'Registro encontrado. Listo para check-in.',
           feedbackType: isPagoPendiente ? FeedbackType.error : FeedbackType.info,
           feedbackId: state.feedbackId + 1,
         ),

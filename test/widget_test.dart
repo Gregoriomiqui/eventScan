@@ -36,15 +36,20 @@ class _FakeRepository implements CheckInRepository {
 void main() {
   testWidgets('app boots with check-in page', (WidgetTester tester) async {
     final repository = _FakeRepository();
+    final getAttendeeByUid = GetAttendeeByUidUseCase(repository);
+    final confirmCheckIn = ConfirmCheckInUseCase(repository);
 
     await tester.pumpWidget(
       EventScanApp(
-        getAttendeeByUid: GetAttendeeByUidUseCase(repository),
-        confirmCheckIn: ConfirmCheckInUseCase(repository),
+        attendeeGetAttendeeByUid: getAttendeeByUid,
+        attendeeConfirmCheckIn: confirmCheckIn,
+        staffGetAttendeeByUid: getAttendeeByUid,
+        staffConfirmCheckIn: confirmCheckIn,
       ),
     );
 
-    expect(find.text('Check-in de Asistentes'), findsOneWidget);
-    expect(find.text('UID del asistente'), findsOneWidget);
+    expect(find.text('Selecciona tipo de check-in'), findsOneWidget);
+    expect(find.text('Asistentes'), findsOneWidget);
+    expect(find.text('Staff'), findsOneWidget);
   });
 }

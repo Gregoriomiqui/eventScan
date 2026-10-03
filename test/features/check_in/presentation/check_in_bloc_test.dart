@@ -75,7 +75,7 @@ void main() {
       const CheckInState(
         uid: validUid,
         attendee: attendee,
-        feedbackMessage: 'Asistente encontrado. Listo para check-in.',
+        feedbackMessage: 'Registro encontrado. Listo para check-in.',
         feedbackType: FeedbackType.info,
         feedbackId: 1,
       ),
