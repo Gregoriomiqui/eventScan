@@ -68,6 +68,19 @@ void main() {
     );
   }
 
+  Widget buildStaffWidget(_MockCheckInBloc bloc) {
+    return MaterialApp(
+      home: BlocProvider<CheckInBloc>.value(
+        value: bloc,
+        child: const CheckInPage(
+          scannerOverride: SizedBox(height: 220),
+          title: 'Check-in de Staff',
+          showWorkshops: false,
+        ),
+      ),
+    );
+  }
+
   testWidgets('renders attendee card when state has attendee', (tester) async {
     final bloc = _MockCheckInBloc();
     const state = CheckInState(uid: '550e8400-e29b-41d4-a716-446655440000', attendee: attendee);
@@ -128,6 +141,19 @@ void main() {
       find.widgetWithText(FilledButton, 'Confirmar Check-in'),
     );
     expect(confirm.onPressed, isNull);
+  });
+
+  testWidgets('hides workshop rows on staff mode', (tester) async {
+    final bloc = _MockCheckInBloc();
+    const state = CheckInState(uid: '10467097-0', attendee: attendee);
+    when(() => bloc.state).thenReturn(state);
+    whenListen(bloc, const Stream<CheckInState>.empty(), initialState: state);
+
+    await tester.pumpWidget(buildStaffWidget(bloc));
+
+    expect(find.text('Taller AM'), findsNothing);
+    expect(find.text('Taller PM'), findsNothing);
+    expect(find.text('Check-in de Staff'), findsOneWidget);
   });
 
   testWidgets('shows reset button and clears uid after successful confirmation', (tester) async {
