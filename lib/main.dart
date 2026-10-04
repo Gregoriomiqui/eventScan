@@ -1,3 +1,7 @@
+import 'package:event_scan/core/brand/brand_config.dart';
+import 'package:event_scan/core/brand/brand_loader.dart';
+import 'package:event_scan/core/brand/brand_scope.dart';
+import 'package:event_scan/core/brand/config_error_app.dart';
 import 'package:event_scan/core/network/api_config.dart';
 import 'package:event_scan/core/network/app_supabase_client.dart';
 import 'package:event_scan/core/theme/app_theme.dart';
@@ -8,12 +12,25 @@ import 'package:event_scan/features/check_in/domain/usecases/confirm_check_in.da
 import 'package:event_scan/features/check_in/domain/usecases/get_attendee_by_uid.dart';
 import 'package:event_scan/features/check_in/presentation/pages/check_in_mode_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:supabase/supabase.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final brandId = brandIdForFlavor(appFlavor);
+  final BrandConfig brandConfig;
+  try {
+    brandConfig = await const BrandLoader().load(brandId: brandId);
+  } on BrandConfigException catch (error) {
+    runApp(ConfigErrorApp(error: error));
+    return;
+  }
+
   final apiConfig = ApiConfig.fromEnvironment();
   if (!apiConfig.hasValidSupabaseConfig) {
-    runApp(const MissingConfigApp());
+    runApp(
+      BrandScope(config: brandConfig, child: const MissingConfigApp()),
+    );
     return;
   }
 
@@ -45,21 +62,24 @@ void main() {
   final staffRepository = CheckInRepositoryImpl(staffDataSource);
 
   runApp(
-    EventScanApp(
-      attendeeGetAttendeeByUid: GetAttendeeByUidUseCase(attendeeRepository),
-      attendeeConfirmCheckIn: ConfirmCheckInUseCase(attendeeRepository),
-      staffGetAttendeeByUid: GetAttendeeByUidUseCase(staffRepository),
-      staffConfirmCheckIn: ConfirmCheckInUseCase(staffRepository),
-      exportAttendeesPdf: (onStageChanged) => pdfExportService.exportTable(
-        table: apiConfig.attendeesTable,
-        reportTitle: 'Listado de Asistentes',
-        additionalExcludedColumns: const {'ID_TALLER_AM', 'ID_TALLER_PM'},
-        onStageChanged: onStageChanged,
-      ),
-      exportStaffPdf: (onStageChanged) => pdfExportService.exportTable(
-        table: apiConfig.staffTable,
-        reportTitle: 'Listado de Staff',
-        onStageChanged: onStageChanged,
+    BrandScope(
+      config: brandConfig,
+      child: EventScanApp(
+        attendeeGetAttendeeByUid: GetAttendeeByUidUseCase(attendeeRepository),
+        attendeeConfirmCheckIn: ConfirmCheckInUseCase(attendeeRepository),
+        staffGetAttendeeByUid: GetAttendeeByUidUseCase(staffRepository),
+        staffConfirmCheckIn: ConfirmCheckInUseCase(staffRepository),
+        exportAttendeesPdf: (onStageChanged) => pdfExportService.exportTable(
+          table: apiConfig.attendeesTable,
+          reportTitle: 'Listado de Asistentes',
+          additionalExcludedColumns: const {'ID_TALLER_AM', 'ID_TALLER_PM'},
+          onStageChanged: onStageChanged,
+        ),
+        exportStaffPdf: (onStageChanged) => pdfExportService.exportTable(
+          table: apiConfig.staffTable,
+          reportTitle: 'Listado de Staff',
+          onStageChanged: onStageChanged,
+        ),
       ),
     ),
   );

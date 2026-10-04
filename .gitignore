@@ -33,6 +33,11 @@ migrate_working_dir/
 /build/
 /coverage/
 
+# White-label local secrets and signing keys
+brands/*/secrets.json
+android/keystores/
+android/key-*.properties
+
 # Symbolication related
 app.*.symbols
 
