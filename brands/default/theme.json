@@ -1,0 +1,63 @@
+{
+  "$schema": "../_schema/theme.schema.json",
+  "color": {
+    "primary": "#D91C7A",
+    "primaryDark": "#A81560",
+    "primaryLight": "#F42C8E",
+    "accent": "#FF5BA8",
+    "ink": "#111827",
+    "surface": "#FFFFFF",
+    "surfaceMuted": "#F9FAFB",
+    "border": "#E5E7EB",
+    "textSecondary": "#4B5563",
+    "onPrimary": "#FFFFFF",
+    "success": "#1E8E5A",
+    "successContainer": "#DCF3E6",
+    "warning": "#B7791F",
+    "warningContainer": "#FDF1D8",
+    "error": "#C0392B",
+    "errorContainer": "#FBE3E1",
+    "info": "#4B5FBD",
+    "infoContainer": "#E6E9F8"
+  },
+  "typography": {
+    "fontFamilies": {
+      "body": {
+        "family": "Montserrat",
+        "files": {}
+      },
+      "display": {
+        "family": "Playfair Display",
+        "files": {}
+      }
+    },
+    "scale": {
+      "displaySmall": { "family": "display", "size": 36, "weight": 700 },
+      "headlineSmall": { "family": "body", "size": 24, "weight": 600 },
+      "titleLarge": { "family": "body", "size": 22, "weight": 600 },
+      "titleMedium": { "family": "body", "size": 16, "weight": 600 },
+      "bodyMedium": { "family": "body", "size": 14, "weight": 400 },
+      "labelLarge": { "family": "body", "size": 14, "weight": 600 }
+    }
+  },
+  "radius": { "sm": 10, "md": 12, "lg": 16, "xl": 18, "full": 999 },
+  "spacing": { "xxs": 2, "xs": 4, "sm": 8, "md": 12, "lg": 16, "xl": 24 },
+  "border": { "width": 1 },
+  "elevation": { "card": 0, "appBar": 0 },
+  "components": {
+    "button": { "radius": "md", "paddingH": 24, "paddingV": 14 },
+    "input": { "radius": "md", "focusBorderWidth": 2 },
+    "card": { "radius": "lg", "bordered": true },
+    "iconBadge": { "radius": "sm", "size": 40, "sizeSmall": 32, "tintAlpha": 0.12 },
+    "scanner": { "radius": "lg", "height": 220, "heightCompact": 200, "heightSmall": 160 },
+    "snackBar": { "behavior": "floating" },
+    "appBar": { "centerTitle": false }
+  },
+  "layout": {
+    "maxContentWidth": 620,
+    "wideBreakpoint": 760,
+    "compactBreakpoint": 600,
+    "smallWidthBreakpoint": 360,
+    "smallHeightBreakpoint": 600
+  }
+}

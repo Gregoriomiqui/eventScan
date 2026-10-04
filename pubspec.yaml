@@ -60,6 +60,16 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+  assets:
+    - path: brands/default/brand.json
+      flavors: [default]
+    - path: brands/default/theme.json
+      flavors: [default]
+    - path: brands/default/entities.json
+      flavors: [default]
+    - path: brands/default/assets/
+      flavors: [default]
+
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

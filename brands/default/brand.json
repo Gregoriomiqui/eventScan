@@ -1,0 +1,20 @@
+{
+  "$schema": "../_schema/brand.schema.json",
+  "id": "default",
+  "appName": "Event Scan",
+  "android": {
+    "applicationId": "com.example.event_scan"
+  },
+  "logo": {
+    "primary": "assets/logo.svg",
+    "showInAppBar": false,
+    "showInHome": false,
+    "showInPdf": false
+  },
+  "locale": "es",
+  "themeMode": "light",
+  "home": {
+    "title": "Control de Acceso",
+    "subtitle": "Selecciona el flujo de check-in y gestiona tus listados PDF."
+  }
+}

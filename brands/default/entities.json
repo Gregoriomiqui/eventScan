@@ -1,0 +1,95 @@
+{
+  "$schema": "../_schema/entities.schema.json",
+  "attendees": {
+    "table": "registered",
+    "labels": {
+      "module": "Asistentes",
+      "moduleDescription": "Valida y confirma check-in de asistentes con información completa del evento.",
+      "checkInTitle": "Check-in de Asistentes",
+      "icon": "groups"
+    },
+    "identifiers": {
+      "enrollmentCode": { "column": "CODIGO_INSCRIPCION", "format": "uuid_v4" },
+      "rut": { "column": "RUT" }
+    },
+    "checkIn": { "column": "CHECK_IN", "timestampColumn": null },
+    "display": {
+      "title": { "columns": ["NOMBRE", "APELLIDO"], "fallbackColumns": ["NOMBRE_APELLIDO"] },
+      "fields": [
+        { "column": "RUT", "label": "RUT" },
+        { "column": "EMAIL", "label": "Email", "aliases": ["CORREO"] },
+        { "column": "TELEFONO", "label": "Teléfono", "aliases": ["TEL", "TELEFONO_CONTACTO"] },
+        { "column": "DISTRITO", "label": "Distrito" },
+        { "column": "IGLESIA", "label": "Iglesia" },
+        { "column": "TALLER_AM", "label": "Taller AM" },
+        { "column": "TALLER_PM", "label": "Taller PM" }
+      ]
+    },
+    "rules": [
+      {
+        "id": "payment_pending",
+        "type": "blockIfEquals",
+        "column": "ESTADO_PAGO",
+        "values": ["PENDIENTE"],
+        "caseInsensitive": true,
+        "message": "Pendiente de validación de pago"
+      }
+    ],
+    "export": {
+      "enabled": true,
+      "title": "Listado de Asistentes",
+      "mode": "allExcept",
+      "excludeColumns": [
+        "ID_REGISTRO", "CODIGO_INSCRIPCION", "URL_CODIGO_QR", "ESTADO_PAGO",
+        "CONTACTO_PRINCIPAL", "ID_TRANSACCION_BANCARIA", "FECHA_ACTUALIZACION",
+        "FECHA_INSCRIPCION", "ID_TALLER_AM", "ID_TALLER_PM"
+      ],
+      "columns": []
+    }
+  },
+  "staff": {
+    "table": "staff",
+    "labels": {
+      "module": "Staff",
+      "moduleDescription": "Valida y confirma check-in del staff por RUT o código de inscripción.",
+      "checkInTitle": "Check-in de Staff",
+      "icon": "badge"
+    },
+    "identifiers": {
+      "enrollmentCode": { "column": "CODIGO_INSCRIPCION", "format": "uuid_v4" },
+      "rut": { "column": "RUT" }
+    },
+    "checkIn": { "column": "CHECK_IN", "timestampColumn": null },
+    "display": {
+      "title": { "columns": ["NOMBRE", "APELLIDO"], "fallbackColumns": ["NOMBRE_APELLIDO"] },
+      "fields": [
+        { "column": "RUT", "label": "RUT" },
+        { "column": "EMAIL", "label": "Email" },
+        { "column": "TELEFONO", "label": "Teléfono" },
+        { "column": "DISTRITO", "label": "Distrito" },
+        { "column": "IGLESIA", "label": "Iglesia" }
+      ]
+    },
+    "rules": [
+      {
+        "id": "payment_pending",
+        "type": "blockIfEquals",
+        "column": "ESTADO_PAGO",
+        "values": ["PENDIENTE"],
+        "caseInsensitive": true,
+        "message": "Pendiente de validación de pago"
+      }
+    ],
+    "export": {
+      "enabled": true,
+      "title": "Listado de Staff",
+      "mode": "allExcept",
+      "excludeColumns": [
+        "ID_REGISTRO", "CODIGO_INSCRIPCION", "URL_CODIGO_QR", "ESTADO_PAGO",
+        "CONTACTO_PRINCIPAL", "ID_TRANSACCION_BANCARIA", "FECHA_ACTUALIZACION",
+        "FECHA_INSCRIPCION"
+      ],
+      "columns": []
+    }
+  }
+}
